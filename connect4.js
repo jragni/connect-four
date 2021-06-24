@@ -137,14 +137,11 @@ function checkForWin() {
     let [y, x] = cells[0,0];  
     let currentPlayer = board[y][x];
     if (currentPlayer !== null) {
-      for (let cell of cells) {
-        // if a coordinate is valid, check its value on the board and 
-        // compare it to currPlayer
-        if (!(validCoord(cell)) || board[cell[0]][cell[1]] !== currentPlayer) {
-          return false;
-        }
-      }
-      return true;
+
+      return cells.every( cell => {
+        return validCoord(cell) && board[cell[0]][cell[1]] === currentPlayer
+      })
+
     }    
     return false;
   }
