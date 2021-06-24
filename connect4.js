@@ -85,23 +85,17 @@ function placeInTable(y, x) {
   let target = document.getElementById(`${y}-${x}`);
   if (currPlayer === 1) {
     piece.style.backgroundColor = "blue";
-    currPlayer = 2;
-
   }
   else {
     piece.style.backgroundColor = "red";
-    currPlayer = 1;
   }
-  
   target.append(piece);
-  board[y][x] = currPlayer;
-
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
+  alert(msg);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -117,8 +111,8 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
   placeInTable(y, x);
+  board[y][x] = currPlayer;
 
   // check for win
   if (checkForWin()) {
@@ -126,26 +120,45 @@ function handleClick(evt) {
   }
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
+  if(board.every(row => row.every(col => col !== null))){
+    return endGame('Tie!');
+  }
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  currPlayer = currPlayer === 1 ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
 function checkForWin() {
-
   /** _win:
    * takes input array of 4 cell coordinates [ [y, x], [y, x], [y, x], [y, x] ]
    * returns true if all are legal coordinates for a cell & all cells match
    * currPlayer
    */
+
+  /**
+   * _wins 
+   * @param {*} cells -- list of coordinates of the game state board 
+   */
+
   function _win(cells) {
 
-    // TODO: Check four cells to see if they're all legal & all color of current
-    // player
-
+    let [y, x] = cells[0,0];  
+    let currentPlayer = board[y][x];
+    if(currentPlayer !== null){
+      for(let cell of cells){
+        let currentPiece = board[ cell[0], cell[1] ]
+        if(currentPlayer !== currentPiece){
+          return false;
+        }
+      }
+  
+      return true;
+    }
+    
+    return false;
+  
   }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
@@ -153,15 +166,12 @@ function checkForWin() {
   // ways to win: horizontal, vertical, diagonalDR, diagonalDL
   for (var y = 0; y < HEIGHT; y++) {
     for (var x = 0; x < WIDTH; x++) {
-      // TODO: assign values to the below variables for each of the ways to win
-      // horizontal has been assigned for you
-      // each should be an array of 4 cell coordinates:
-      // [ [y, x], [y, x], [y, x], [y, x] ]
+     
 
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert;
-      let diagDL;
-      let diagDR;
+      let vert = [[y, x], [y + 1, x], [y+2, x], [y + 3, x] ] ;
+      let diagDL = [ [y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+      let diagDR = [ [y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
