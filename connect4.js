@@ -18,20 +18,15 @@ const board = []; // array of rows, each row is array of cells  (board[y][x])
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 
-function makeBoard(height = HEIGHT, width = WIDTH) {
-
-
+function makeBoard() {
   // Game mechanics code  -- to keep track of the game state
-  for(let row = 0; row < height; row++){
-
+  for(let row = 0; row < HEIGHT; row++){
     let currentRow = [];
-    for(let columns = 0; columns < width; columns++){
+    for(let columns = 0; columns < WIDTH; columns++){
       currentRow.push(null);
     }
     board.push(currentRow);
-
   }
-
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
@@ -41,16 +36,10 @@ function makeHtmlBoard() {
   
   let htmlBoard = document.getElementById('board');
 
-  // TODO: add comment for this code--- COMPLETED
-
   // Creates row for user interface to handle which column player selects to drop game piece.
   var top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
-
-
-  // TODO: add comment for this code -- COMPLETED
-
 
   // Creates column for user interface to handle which column player selects to drop game piece.
   for (var x = 0; x < WIDTH; x++) {
@@ -64,33 +53,49 @@ function makeHtmlBoard() {
   // uses HEIGHT to create table rows
   // uses WIDTH to create table cells for each row
   for (var y = 0; y < HEIGHT; y++) {
-    // TODO: Create a table row element and assign to a "row" variable
 
+    let currRow = document.createElement("tr");
     for (var x = 0; x < WIDTH; x++) {
-      // TODO: Create a table cell element and assign to a "cell" variable
 
-      // TODO: add an id, y-x, to the above table cell element
-      // you'll use this later, so make sure you use y-x
+      let currCell = document.createElement("td");
+      currCell.id = `${y}-${x}`
 
-      // TODO: append the table cell to the table row
-
+      currRow.append(currCell);
     }
-    // TODO: append the row to the html board
 
+    htmlBoard.append(currRow);
   }
 }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  for (let row = HEIGHT - 1; row >= 0; row--) {
+    if (board[row][x] === null) {
+      return row;
+    }
+  }
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
+  let piece = document.createElement("div");
+  piece.className = "piece";
+  let target = document.getElementById(`${y}-${x}`);
+  if (currPlayer === 1) {
+    piece.style.backgroundColor = "blue";
+    currPlayer = 2;
+
+  }
+  else {
+    piece.style.backgroundColor = "red";
+    currPlayer = 1;
+  }
+  
+  target.append(piece);
+  board[y][x] = currPlayer;
+
 }
 
 /** endGame: announce game end */
