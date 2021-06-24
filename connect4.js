@@ -32,7 +32,6 @@ function makeBoard() {
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
-  // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   
   let htmlBoard = document.getElementById('board');
 
@@ -56,13 +55,10 @@ function makeHtmlBoard() {
 
     let currRow = document.createElement("tr");
     for (var x = 0; x < WIDTH; x++) {
-
       let currCell = document.createElement("td");
       currCell.id = `${y}-${x}`
-
       currRow.append(currCell);
     }
-
     htmlBoard.append(currRow);
   }
 }
@@ -70,11 +66,12 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  for (let row = HEIGHT - 1; row >= 0; row--) {
-    if (board[row][x] === null) {
-      return row;
+  for (let y = HEIGHT - 1; y >= 0; y--) {
+    if (board[y][x] === null) {
+      return y;
     }
   }
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -82,13 +79,8 @@ function findSpotForCol(x) {
 function placeInTable(y, x) {
   let piece = document.createElement("div");
   piece.className = "piece";
+  piece.classList.add(`p${currPlayer}`)
   let target = document.getElementById(`${y}-${x}`);
-  if (currPlayer === 1) {
-    piece.style.backgroundColor = "blue";
-  }
-  else {
-    piece.style.backgroundColor = "red";
-  }
   target.append(piece);
 }
 
@@ -101,11 +93,10 @@ function endGame(msg) {
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
-  // get x from ID of clicked cell
-  var x = +evt.target.id;
+  let x = +evt.target.id;
 
   // get next spot in column (if none, ignore click)
-  var y = findSpotForCol(x);
+  let y = findSpotForCol(x);
   if (y === null) {
     return;
   }
@@ -120,11 +111,11 @@ function handleClick(evt) {
   }
 
   // check for tie
-  if(board.every(row => row.every(col => col !== null))){
+  // board.every(row => row.every(col => col !== null)))
+  if (board[0].every(cell => cell)) {
     return endGame('Tie!');
   }
 
-  // switch players
   currPlayer = currPlayer === 1 ? 2 : 1;
 }
 
@@ -143,22 +134,19 @@ function checkForWin() {
    */
 
   function _win(cells) {
-
     let [y, x] = cells[0,0];  
     let currentPlayer = board[y][x];
-    if(currentPlayer !== null){
-      for(let cell of cells){
-        let currentPiece = board[ cell[0], cell[1] ]
-        if(currentPlayer !== currentPiece){
+    if (currentPlayer !== null) {
+      for (let cell of cells) {
+        // if a coordinate is valid, check its value on the board and 
+        // compare it to currPlayer
+        if (!(validCoord(cell)) || board[cell[0]][cell[1]] !== currentPlayer) {
           return false;
         }
       }
-  
       return true;
-    }
-    
+    }    
     return false;
-  
   }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
@@ -169,7 +157,7 @@ function checkForWin() {
      
 
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert = [[y, x], [y + 1, x], [y+2, x], [y + 3, x] ] ;
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x] ] ;
       let diagDL = [ [y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
       let diagDR = [ [y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
 
@@ -179,6 +167,15 @@ function checkForWin() {
       }
     }
   }
+}
+
+/** Takes in coordinate and returns boolean if X and Y are valid */
+function validCoord(coord) {
+  let [y, x] = [coord[0], coord[1]]
+  if (x >= WIDTH || x < 0 || y >= HEIGHT || y < 0) {
+    return false;
+  } 
+  return true;
 }
 
 makeBoard();
