@@ -29,6 +29,7 @@ function makeHtmlBoard() {
   // TODO: add comment for this code
   var top = document.createElement("tr");
   top.setAttribute("id", "column-top");
+  top.setAttribute("listener" , "true");
   top.addEventListener("click", handleClick);
 
   // TODO: add comment for this code
@@ -59,6 +60,7 @@ function makeHtmlBoard() {
   }
 }
 
+
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
@@ -75,7 +77,13 @@ function placeInTable(y, x) {
 /** endGame: announce game end */
 
 function endGame(msg) {
+<<<<<<< HEAD
   // TODO: pop up alert message
+=======
+  alert(msg);
+  document.getElementById("column-top").removeEventListener("click", handleClick);
+  document.getElementById("column-top").setAttribute("listener", "false");
+>>>>>>> df2346d26c8c14a05705dad9a9bbbcf77410a8c3
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -145,5 +153,38 @@ function checkForWin() {
   }
 }
 
+<<<<<<< HEAD
+=======
+/** Takes in coordinate and returns boolean if X and Y are valid */
+function validCoord(coord) {
+  let [y, x] = [coord[0], coord[1]]
+  if (x >= WIDTH || x < 0 || y >= HEIGHT || y < 0) {
+    return false;
+  } 
+  return true;
+}
+
+function resetBoard(evt){
+  evt.preventDefault();
+
+  for(let y = 0; y < HEIGHT; y++){
+    for(let x = 0; x < WIDTH; x++){
+      // check the game board's value if its 
+      board[y][x] = null;
+      // remove the html chip
+      let currentCell = document.getElementById(`${y}-${x}`);
+    
+      if(currentCell.children[0]){
+        currentCell.removeChild(currentCell.children[0]);
+      }
+    }
+  }
+  if (document.getElementById("column-top").getAttribute("listener") !== "true") {
+    document.getElementById("column-top").addEventListener("click", handleClick);
+  }
+}
+
+
+>>>>>>> df2346d26c8c14a05705dad9a9bbbcf77410a8c3
 makeBoard();
 makeHtmlBoard();
