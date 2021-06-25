@@ -38,6 +38,7 @@ function makeHtmlBoard() {
   // Creates row for user interface to handle which column player selects to drop game piece.
   var top = document.createElement("tr");
   top.setAttribute("id", "column-top");
+  top.setAttribute("listener" , "true");
   top.addEventListener("click", handleClick);
 
   var clearButton = document.getElementById("reset-button").addEventListener("click", resetBoard);
@@ -90,6 +91,7 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
   alert(msg);
+  document.getElementById("column-top").removeEventListener("click", handleClick);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -192,7 +194,9 @@ function resetBoard(evt){
       }
     }
   }
-  
+  if (document.getElementById("column-top").getAttribute("listener") !== true) {
+    document.getElementById("column-top").addEventListener("click", handleClick);
+  }
 }
 
 
