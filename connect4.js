@@ -66,6 +66,7 @@ function makeHtmlBoard() {
   }
 }
 
+
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
@@ -92,6 +93,7 @@ function placeInTable(y, x) {
 function endGame(msg) {
   alert(msg);
   document.getElementById("column-top").removeEventListener("click", handleClick);
+  document.getElementById("column-top").setAttribute("listener", "false");
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -194,7 +196,7 @@ function resetBoard(evt){
       }
     }
   }
-  if (document.getElementById("column-top").getAttribute("listener") !== true) {
+  if (document.getElementById("column-top").getAttribute("listener") !== "true") {
     document.getElementById("column-top").addEventListener("click", handleClick);
   }
 }
