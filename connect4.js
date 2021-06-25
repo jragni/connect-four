@@ -40,6 +40,8 @@ function makeHtmlBoard() {
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
 
+  var clearButton = document.getElementById("reset-button").addEventListener("click", resetBoard);
+
   // Creates column for user interface to handle which column player selects to drop game piece.
   for (var x = 0; x < WIDTH; x++) {
     var headCell = document.createElement("td");
@@ -134,7 +136,7 @@ function checkForWin() {
    */
 
   function _win(cells) {
-    let [y, x] = cells[0,0];  
+    let [y, x] = cells[0];  
     let currentPlayer = board[y][x];
     if (currentPlayer !== null) {
 
@@ -174,6 +176,25 @@ function validCoord(coord) {
   } 
   return true;
 }
+
+function resetBoard(evt){
+  evt.preventDefault();
+
+  for(let y = 0; y < HEIGHT; y++){
+    for(let x = 0; x < WIDTH; x++){
+      // check the game board's value if its 
+      board[y][x] = null;
+      // remove the html chip
+      let currentCell = document.getElementById(`${y}-${x}`);
+    
+      if(currentCell.children[0]){
+        currentCell.removeChild(currentCell.children[0]);
+      }
+    }
+  }
+  
+}
+
 
 makeBoard();
 makeHtmlBoard();
