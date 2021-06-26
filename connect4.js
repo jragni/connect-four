@@ -5,7 +5,6 @@
  * board fills (tie)
  */
 
-
 class Game {
 
   constructor(players) {
@@ -14,7 +13,7 @@ class Game {
     [this.p1, this.p2] = players;
     this.width = 7;
     this.height = 6;
-    this.currPlayer = p1;
+    this.currPlayer = this.p1;
     this.board = [];
     this.gameOver = false;
     // In order to bind click action to the object
@@ -167,20 +166,36 @@ class Game {
       }
     }
   }
-
-
 }
-
-
-
+/** Player
+ *  creates a player class to determin players
+ */
 class Player {
   constructor(color) {
     this.color = color;
   }
 }
 
-// temp
-let p1 = new Player('teal')
-let p2 = new Player('blue')
-//end temp
-let game = new Game([p1, p2])
+
+
+// set game start and start upon click
+let gameStart = document.getElementById('start');
+gameStart.setAttribute('started', 'false')
+
+gameStart.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  // temp
+  if(gameStart.getAttribute('started') == 'false' ){
+    let p1 = new Player(document.getElementById('p1-color').value);
+    let p2 = new Player(document.getElementById('p2-color').value);
+    new Game([p1, p2]);
+    // 
+    gameStart.setAttribute('started', 'true');
+  }else{
+    Array.from(document.getElementById('board').childNodes).forEach(node => node.remove())
+    gameStart.setAttribute('started', 'false');
+
+    // reset game
+  }
+
+})
