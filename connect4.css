@@ -1,10 +1,5 @@
 /* game board table */
 
-#game{
-  text-align: left;
-  width:100%;
-}
-
 #board td {
   width: 50px;
   height: 50px;
@@ -20,13 +15,13 @@
   border-radius: 50%;
 }
 
-/* .piece.p1 {
+.piece.p1 {
   background-color: red;
 }
 
 .piece.p2 {
   background-color: blue;
-} */
+}
 
 /* column-top is table row of clickable areas for each column */
 
@@ -36,19 +31,4 @@
 
 #column-top td:hover {
   background-color: gold;
-}
-
-
-/* Page Aesthetics */
-#title{
-  text-align: left;
-  width: 100%;
-}
-.user-interface{
-  width:100%;
-  text-align: left;
-  margin-bottom: 24px;
-}
-input{
-  width: 120px;
 }
