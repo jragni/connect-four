@@ -94,6 +94,7 @@ class Game {
   endGame(msg) {
     alert(msg);
     this.gameOver = true;
+    document.getElementById('start').innerHTML = "Reset Game"
   }
 
   /** handleClick: handle click of column top to play piece */
