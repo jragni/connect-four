@@ -195,6 +195,7 @@ gameStart.addEventListener('click', (evt) => {
   }else{
     Array.from(document.getElementById('board').childNodes).forEach(node => node.remove())
     gameStart.setAttribute('started', 'false');
+    document.getElementById("start").innerHTML = "Start"
 
     // reset game
   }
